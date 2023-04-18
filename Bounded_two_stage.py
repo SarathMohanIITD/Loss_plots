@@ -109,7 +109,7 @@ class RwlGNN:
 
             self.train_specific(c,new_term)
             if epoch%20==0:
-                #kk = sq_norm_Aw - self.w_old.t() * self.weight
+                ##kk = sq_norm_Aw - self.w_old.t() * self.weight
                 bound_loss = self.bound**2 * torch.log(torch.sqrt(torch.tensor(self.d))*torch.square(torch.norm(self.A()-self.A(self.w_old))))
                 loss_fro = args.alpha * torch.norm(self.L() - L_noise, p='fro')
                 loss_smooth_feat = args.beta * self.feature_smoothing(self.A(), features)
