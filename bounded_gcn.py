@@ -117,6 +117,8 @@ class BoundedGCN(nn.Module):
         self.adj_norm = None
         self.features = None
 
+
+
     def forward(self, x, adj):
         if self.with_relu:
             x = F.relu(self.gc1(x, adj))
@@ -227,13 +229,12 @@ class BoundedGCN(nn.Module):
 
             self.l2_reg = 2 * self.bound**2 * (torch.log(torch.norm(self.gc1.weight)) + torch.log(torch.norm(self.gc2.weight)) )    # Added by me
 
-            #if self.l2_reg<0:
-            #    self.l2_reg=0
+
 
             loss_train = F.nll_loss(output[idx_train], labels[idx_train]) + self.l2_reg
 
-            if i%10==0:
-                print(f'l2 Reg = {self.l2_reg} , Loss = {loss_train}')
+            # if i%10==0:
+            #     print(f'l2 Reg = {self.l2_reg} , Loss = {loss_train}')
 
             loss_train.backward()
             optimizer.step()
@@ -283,12 +284,7 @@ class BoundedGCN(nn.Module):
             self.eval()
             output = self.forward(self.features, self.adj_norm)
 
-            # def eval_class(output, labels):
-            #     preds = output.max(1)[1].type_as(labels)
-            #     return f1_score(labels.cpu().numpy(), preds.cpu().numpy(), average='micro') + \
-            #         f1_score(labels.cpu().numpy(), preds.cpu().numpy(), average='macro')
 
-            # perf_sum = eval_class(output[idx_val], labels[idx_val])
             loss_val = F.nll_loss(output[idx_val], labels[idx_val])
 
             if best_loss_val > loss_val:

@@ -57,25 +57,18 @@ class RwlGNN:
         L_noise = D - adj
 
 
-        self.bound = args.bound            #############################
-        self.d =  features.shape[1]        ################### Dimension of feature
+        self.bound = args.bound
+        self.d =  features.shape[1]
 
 
 
+        self.weight = self.Linv(L_noise)
+        self.w_old = torch.zeros_like(self.weight)
 
-        # INIT
-        #n = features.shape[0]
-        #self.weight = torch.rand(int(n*(n-1)/2),dtype=torch.float,requires_grad=True,device = self.device)
-
-        self.weight = self.Linv(L_noise)  ###################################################
-        self.w_old = torch.zeros_like(self.weight)  ####################  To store previous w value ( w^{t-1} )
-
-        # self.w_old= self.Linv(L_noise)
-        #self.w_old=self.weight
 
         self.weight.requires_grad = True
         self.weight = self.weight.to(self.device)
-        self.w_old = self.w_old.to(self.device)  #######################################################
+        self.w_old = self.w_old.to(self.device)
         c = self.Lstar(2*L_noise*args.alpha - args.beta*(torch.matmul(features,features.t())) )
 
         #sq_norm_Aw = torch.norm(self.A(), p="fro") ** 2   ############################################################
@@ -108,20 +101,20 @@ class RwlGNN:
             new_term = self.bound * (2 * self.Astar(self.A()) - self.w_old) / (sq_norm_Aw - self.w_old.t() * self.weight) ##
 
             self.train_specific(c,new_term)
-            if epoch%20==0:
-                ##kk = sq_norm_Aw - self.w_old.t() * self.weight
-                bound_loss = self.bound**2 * torch.log(torch.sqrt(torch.tensor(self.d))*torch.square(torch.norm(self.A()-self.A(self.w_old))))
-                loss_fro = args.alpha * torch.norm(self.L() - L_noise, p='fro')
-                loss_smooth_feat = args.beta * self.feature_smoothing(self.A(), features)
-
-                print(f'Total loss = {loss_fro+loss_smooth_feat}, Bound loss = {bound_loss}')
-                #print(f'sq_norm_Aw - self.w_old.t()*self.weight) = {kk.sum()}')
-                #print(f'New Term sum = {new_term.sum()}')
+            # if epoch%20==0:
+            #     ##kk = sq_norm_Aw - self.w_old.t() * self.weight
+            #     bound_loss = self.bound**2 * torch.log(torch.sqrt(torch.tensor(self.d))*torch.square(torch.norm(self.A()-self.A(self.w_old))))
+            #     loss_fro = args.alpha * torch.norm(self.L() - L_noise, p='fro')
+            #     loss_smooth_feat = args.beta * self.feature_smoothing(self.A(), features)
+            #
+            #     #print(f'Total loss = {loss_fro+loss_smooth_feat}, Bound loss = {bound_loss}')
+            #     #print(f'sq_norm_Aw - self.w_old.t()*self.weight) = {kk.sum()}')
+            #     #print(f'New Term sum = {new_term.sum()}')
   
-        print("Optimization Finished!")
-        print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
-        print(args)
-        print(f'New term sum = {new_term.sum()}')
+        #print("Optimization Finished!")
+        #print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
+        #print(args)
+        #print(f'New term sum = {new_term.sum()}')
 
         return self.A().detach()
 
