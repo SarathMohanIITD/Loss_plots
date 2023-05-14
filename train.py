@@ -81,8 +81,8 @@ idx_train, idx_val, idx_test = data.idx_train, data.idx_val, data.idx_test
 
 if args.dataset == 'pubmed':
     # just for matching the results in the paper, see details in https://github.com/ChandlerBang/Pro-GNN/issues/2
-    print("just for matching the results in the paper," + \
-          "see details in https://github.com/ChandlerBang/Pro-GNN/issues/2")
+    #print("just for matching the results in the paper," + \
+    #      "see details in https://github.com/ChandlerBang/Pro-GNN/issues/2")
     idx_train, idx_val, idx_test = get_train_val_test(adj.shape[0],
             val_size=0.1, test_size=0.8, stratify=encode_onehot(labels), seed=15)
 
@@ -115,7 +115,7 @@ torch.manual_seed(args.seed)
 ##########################
 if args.bounded == 'y':
     from bounded_gcn import BoundedGCN
-    print("Using bounded gcn")
+    #print("Using bounded gcn")
     model = BoundedGCN(nfeat=features.shape[1],
                 nhid=args.hidden,
                 nclass=labels.max().item() + 1,
@@ -126,8 +126,8 @@ if args.bounded == 'y':
     #          dropout=args.dropout, device=device)
     if args.two_stage=="y":
         from Bounded_two_stage import RwlGNN
-        print(" Debug ::: Selected Bounded_two_stage ")
-        print(f'Debug ::: Bound = {args.bound}')
+        #print(" Debug ::: Selected Bounded_two_stage ")
+        #print(f'Debug ::: Bound = {args.bound}')
     else:
         from BoundedJointLearning import RwlGNN
 else:
@@ -163,7 +163,7 @@ else:
     rwlgnn = RwlGNN(model, args, device)
     if args.two_stage=="y":
         adj_new = rwlgnn.fit(features, perturbed_adj)
-        model.fit(features, adj_new, labels, idx_train, idx_val, verbose=True, train_iters=args.epochs,bound=args.bound) #######
+        model.fit(features, adj_new, labels, idx_train, idx_val, verbose=False, train_iters=args.epochs,bound=args.bound) #######
         model.test(idx_test)
     else:
         rwlgnn.fit(features, perturbed_adj, labels, idx_train, idx_val)

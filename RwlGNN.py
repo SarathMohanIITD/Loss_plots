@@ -137,12 +137,12 @@ class RwlGNN:
             self.plot_acc()
             self.plot_cost()
 
-        print("Optimization Finished!")
-        print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
-        print(args)
+        #print("Optimization Finished!")
+        #print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
+        #print(args)
 
         # Testing
-        print("picking the best model according to validation performance")
+        #print("picking the best model according to validation performance")
         self.model.load_state_dict(self.weights)
 
 

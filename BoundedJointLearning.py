@@ -79,7 +79,7 @@ class RwlGNN:
             node validation indices
         """
 
-        print(" Bounded Joint Learning .........")
+       # print(" Bounded Joint Learning .........")
         args = self.args
         self.symmetric = args.symmetric
         self.optimizer = optim.Adam(self.model.parameters(),
@@ -106,7 +106,7 @@ class RwlGNN:
 
         self.bound = args.bound            #############################
 
-        print(f'Bound = {self.bound}')
+        #print(f'Bound = {self.bound}')
         self.d =  features.shape[1]        ################### Dimension of feature
     
         c = self.Lstar(2*L_noise*args.alpha - args.beta*(torch.matmul(features,features.t())) )
@@ -150,12 +150,12 @@ class RwlGNN:
             self.plot_acc()
             self.plot_cost()
 
-        print("Optimization Finished!")
-        print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
+        #print("Optimization Finished!")
+        #print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
         print(args)
 
         # Testing
-        print("picking the best model according to validation performance")
+        #print("picking the best model according to validation performance")
         self.model.load_state_dict(self.weights)
 
 
@@ -177,12 +177,12 @@ class RwlGNN:
         y = y.to(self.device)
         y.requires_grad = True
 
-        if iter%20 == 0:
-            loss_fro = args.alpha* torch.norm(self.L(y) - L_noise, p='fro')
+        #if iter%20 == 0:
+        #    loss_fro = args.alpha* torch.norm(self.L(y) - L_noise, p='fro')
 
-            loss_smooth_feat =args.beta* self.feature_smoothing(self.A(y), features)
-            bound_loss = self.bound**2  * torch.log(torch.sqrt(torch.tensor(self.d)) * torch.square(torch.norm(self.A() - self.A(self.w_old))))
-            print(f'Total loss = {loss_fro + loss_smooth_feat}, Bound loss = {bound_loss}')
+        #    loss_smooth_feat =args.beta* self.feature_smoothing(self.A(y), features)
+        #    bound_loss = self.bound**2  * torch.log(torch.sqrt(torch.tensor(self.d)) * torch.square(torch.norm(self.A() - self.A(self.w_old))))
+        #    print(f'Total loss = {loss_fro + loss_smooth_feat}, Bound loss = {bound_loss}')
 
         normalized_adj = self.normalize(y)
         output = self.model(features, normalized_adj)
@@ -280,8 +280,8 @@ class RwlGNN:
 
         loss_train = F.nll_loss(output[idx_train], labels[idx_train]) + self.l2_reg
 
-        if epoch % 20 == 0:
-            print(f'L2_reg = {self.l2_reg}, Loss_train = {loss_train}')
+        #if epoch % 20 == 0:
+        #    print(f'L2_reg = {self.l2_reg}, Loss_train = {loss_train}')
 
         acc_train = accuracy(output[idx_train], labels[idx_train])
         loss_train.backward(retain_graph = True)
@@ -321,7 +321,7 @@ class RwlGNN:
     def test(self, features, labels, idx_test):
         """Evaluate the performance of RWL-GNN on test set
         """
-        print("\t=== testing ===")
+        #print("\t=== testing ===")
         self.model.eval()
         adj = self.best_graph
   

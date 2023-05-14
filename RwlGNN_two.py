@@ -78,9 +78,9 @@ class RwlGNN:
         for epoch in range(args.epochs_pre):
             self.train_specific(c)
   
-        print("Optimization Finished!")
-        print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
-        print(args)
+       # print("Optimization Finished!")
+       # print("Total time elapsed: {:.4f}s".format(time.time() - t_total))
+       # print(args)
 
         return self.A().detach()
 
