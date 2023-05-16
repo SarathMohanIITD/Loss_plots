@@ -260,7 +260,9 @@ class BoundedGCN(nn.Module):
                 best_acc_val = acc_val
                 self.output = output
                 weights = deepcopy(self.state_dict())
-
+            if i%10==0:
+                self.l2_reg = torch.norm(self.gc1.weight) * torch.norm(self.gc2.weight)
+                print(f'{self.l2_reg})
         if verbose:
             print('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
