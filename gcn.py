@@ -237,7 +237,8 @@ class GCN(nn.Module):
                 best_loss_val = loss_val
                 self.output = output
                 weights = deepcopy(self.state_dict())
-
+            if i%10 ==0:
+                print(f'{loss_val}')
             if acc_val > best_acc_val:
                 best_acc_val = acc_val
                 self.output = output
@@ -277,8 +278,7 @@ class GCN(nn.Module):
             # perf_sum = eval_class(output[idx_val], labels[idx_val])
             loss_val = F.nll_loss(output[idx_val], labels[idx_val])
 
-            if i%10 ==0:
-                print(f'{loss_val}')
+
 
             if best_loss_val > loss_val:
                 best_loss_val = loss_val
