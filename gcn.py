@@ -225,8 +225,8 @@ class GCN(nn.Module):
             loss_train.backward()
             optimizer.step()
 
-            if verbose and i % 10 == 0:
-                print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
+            #if verbose and i % 10 == 0:
+            #    print('Epoch {}, training loss: {}'.format(i, loss_train.item()))
 
             self.eval()
             output = self.forward(self.features, self.adj_norm)
