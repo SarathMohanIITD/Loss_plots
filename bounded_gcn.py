@@ -7,7 +7,7 @@ from torch.nn.parameter import Parameter
 from torch.nn.modules.module import Module
 from deeprobust.graph import utils
 from copy import deepcopy
-import GCN
+
 from sklearn.metrics import f1_score
 
 class GraphConvolution(Module):
