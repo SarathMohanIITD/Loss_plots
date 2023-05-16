@@ -237,13 +237,14 @@ class GCN(nn.Module):
                 best_loss_val = loss_val
                 self.output = output
                 weights = deepcopy(self.state_dict())
-            if i%10 ==0:
-                print(f'{loss_val}')
+            #if i%10 ==0:
+            #    print(f'{loss_val}')
             if acc_val > best_acc_val:
                 best_acc_val = acc_val
                 self.output = output
                 weights = deepcopy(self.state_dict())
-
+        self.l2_reg = torch.norm(self.gc1.weight) * torch.norm(self.gc2.weight)
+        print(f'Norm = {self.l2_reg})
         if verbose:
             print('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
