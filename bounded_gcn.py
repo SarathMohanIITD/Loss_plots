@@ -248,8 +248,8 @@ class BoundedGCN(nn.Module):
             loss_val = F.nll_loss(output[idx_val], labels[idx_val])
             acc_val = utils.accuracy(output[idx_val], labels[idx_val])
 
-            if i%10 ==0:
-                print(f'{loss_val}')
+            #if i%10 ==0:
+            #    print(f'{loss_val}')
 
             if best_loss_val > loss_val:
                 best_loss_val = loss_val
@@ -262,7 +262,7 @@ class BoundedGCN(nn.Module):
                 weights = deepcopy(self.state_dict())
             if i%10==0:
                 self.l2_reg = torch.norm(self.gc1.weight) * torch.norm(self.gc2.weight)
-                print(f'{self.l2_reg})
+                print(f'{self.l2_reg}')
         if verbose:
             print('=== picking the best model according to the performance on validation ===')
         self.load_state_dict(weights)
