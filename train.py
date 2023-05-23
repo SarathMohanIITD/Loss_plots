@@ -146,11 +146,11 @@ else:
 
 if args.only_gcn:
 
-    perturbed_adj, features, labels = preprocess(perturbed_adj, features, labels, preprocess_adj=False, sparse=True, device=device,weight_decay=args.weight_decay)
+    perturbed_adj, features, labels = preprocess(perturbed_adj, features, labels, preprocess_adj=False, sparse=True, device=device)
 
    # features = torch.norm(features,p='fro')
 
-    model.fit(features, perturbed_adj, labels, idx_train, idx_val, verbose=True, train_iters=args.epochs)
+    model.fit(features, perturbed_adj, labels, idx_train, idx_val, verbose=True, train_iters=args.epochs,weight_decay=args.weight_decay)
     model.test(idx_test)
 
 
