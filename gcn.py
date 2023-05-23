@@ -160,7 +160,7 @@ class GCN(nn.Module):
         """
 
         self.device = self.gc1.weight.device
-	    self.weight_decay = weight_decay
+        self.weight_decay = weight_decay
         if initialize:
             self.initialize()
 
