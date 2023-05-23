@@ -93,7 +93,7 @@ class GCN(nn.Module):
     >>> gcn.test(idx_test)
     """
 
-    def __init__(self, nfeat, nhid, nclass, dropout=0.5, lr=0.01, weight_decay=5e-4,
+    def __init__(self, nfeat, nhid, nclass, dropout=0.5, lr=0.01, weight_decay=0,
             with_relu=True, with_bias=True, device=None):
 
         super(GCN, self).__init__()
