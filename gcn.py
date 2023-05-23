@@ -210,9 +210,10 @@ class GCN(nn.Module):
         self.output = output
 
     def _train_with_val(self, labels, idx_train, idx_val, train_iters, verbose):
+	print('Train with val')
         if verbose:
             print('=== training gcn model ===')
-        optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=self.weight_decay)
+        optimizer = optim.Adam(self.parameters(), lr=self.lr, weight_decay=0.01)
 
         best_loss_val = 100
         best_acc_val = 0
