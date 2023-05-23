@@ -217,7 +217,6 @@ class GCN(nn.Module):
 
         best_loss_val = 100
         best_acc_val = 0
-	print("Train with val")
         for i in range(train_iters):
             self.train()
             optimizer.zero_grad()
