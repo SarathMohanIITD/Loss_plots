@@ -146,7 +146,7 @@ else:
 
 if args.only_gcn:
 
-    perturbed_adj, features, labels = preprocess(perturbed_adj, features, labels, preprocess_adj=False, sparse=True, device=device)
+    perturbed_adj, features, labels = preprocess(perturbed_adj, features, labels, preprocess_adj=False, sparse=True, device=device,weight_decay=args.weight_decay)
 
    # features = torch.norm(features,p='fro')
 
