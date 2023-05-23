@@ -150,7 +150,7 @@ if args.only_gcn:
 
    # features = torch.norm(features,p='fro')
 
-    model.fit(features, perturbed_adj, labels, idx_train, idx_val, verbose=True, train_iters=args.epochs,weight_decay=args.weight_decay)
+    model.fit(features, perturbed_adj, labels, idx_train, idx_val, verbose=True, train_iters=args.epochs,weight_decay=0)
     model.test(idx_test)
 
 
