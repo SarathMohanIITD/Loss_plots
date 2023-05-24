@@ -106,10 +106,7 @@ class BoundedGCN(nn.Module):
         self.dropout = dropout
         self.lr = lr
         self.bound=bound
-        if not with_relu:
-            self.weight_decay = 0
-        else:
-            self.weight_decay = weight_decay
+        self.weight_decay = weight_decay
         self.with_relu = with_relu
         self.with_bias = with_bias
         self.output = None
@@ -193,7 +190,7 @@ class BoundedGCN(nn.Module):
             if patience < train_iters:
                 self._train_with_early_stopping(labels, idx_train, idx_val, train_iters, patience, verbose)
             else:
-                self._train_with_val(labels, idx_train, idx_val, train_iters, verbose)
+                self._train_with_val(labels, idx_train, idx_val, train_iters, verbose,l2_reg)
 
     def _train_without_val(self, labels, idx_train, train_iters, verbose):
         print("Training without val")
@@ -215,7 +212,7 @@ class BoundedGCN(nn.Module):
         output = self.forward(self.features, self.adj_norm)
         self.output = output
 
-    def _train_with_val(self, labels, idx_train, idx_val, train_iters, verbose):
+    def _train_with_val(self, labels, idx_train, idx_val, train_iters, verbose,l2_reg):
         print("Training with val")
         if verbose:
             print('=== training gcn model ===')
