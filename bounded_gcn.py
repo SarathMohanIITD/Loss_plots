@@ -117,7 +117,7 @@ class BoundedGCN(nn.Module):
         self.best_output = None
         self.adj_norm = None
         self.features = None
-        self.l2_reg=0
+        self.l2_reg=torch.zeros(1)
 
 
 
