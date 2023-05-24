@@ -114,7 +114,7 @@ torch.manual_seed(args.seed)
 
 ##########################
 if args.bounded == 'y':
-    from bounded_gcn import BoundedGCN
+    #from bounded_gcn import BoundedGCN
     #print("Using bounded gcn")
     model = BoundedGCN(nfeat=features.shape[1],
                 nhid=args.hidden,
@@ -124,23 +124,23 @@ if args.bounded == 'y':
     #            nhid=args.hidden,
     #            nclass=labels.max().item() + 1,
     #          dropout=args.dropout, device=device)
-    if args.two_stage=="y":
-        from Bounded_two_stage import RwlGNN
-        #print(" Debug ::: Selected Bounded_two_stage ")
-        #print(f'Debug ::: Bound = {args.bound}')
-    else:
-        from BoundedJointLearning import RwlGNN
+    # if args.two_stage=="y":
+    #     from Bounded_two_stage import RwlGNN
+    #     #print(" Debug ::: Selected Bounded_two_stage ")
+    #     #print(f'Debug ::: Bound = {args.bound}')
+    # else:
+    #     from BoundedJointLearning import RwlGNN
 else:
    # from bounded_gcn import BoundedGCN
     model = GCN(nfeat=features.shape[1],
                 nhid=args.hidden,
                 nclass=labels.max().item() + 1,
               dropout=args.dropout, device=device)
-    if args.two_stage=="y":
-        from RwlGNN_two import RwlGNN
-
-    else:
-        from RwlGNN import RwlGNN
+    # if args.two_stage=="y":
+    #     from RwlGNN_two import RwlGNN
+    #
+    # else:
+    #     from RwlGNN import RwlGNN
 
 ######################################
 
