@@ -114,7 +114,7 @@ torch.manual_seed(args.seed)
 
 ##########################
 if args.bounded == 'y':
-    #from bounded_gcn import BoundedGCN
+    from bounded_gcn import BoundedGCN
     #print("Using bounded gcn")
     model = BoundedGCN(nfeat=features.shape[1],
                 nhid=args.hidden,
@@ -131,7 +131,7 @@ if args.bounded == 'y':
     # else:
     #     from BoundedJointLearning import RwlGNN
 else:
-   # from bounded_gcn import BoundedGCN
+   #from bounded_gcn import BoundedGCN
     model = GCN(nfeat=features.shape[1],
                 nhid=args.hidden,
                 nclass=labels.max().item() + 1,
