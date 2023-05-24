@@ -101,16 +101,8 @@ class BoundedGCN(nn.Module):
         self.nfeat = nfeat
         self.hidden_sizes = [nhid]
         self.nclass = nclass
-        nhid1 = int(nfeat / 2)
-        nhid2 = int(nhid1 / 2)
-        nhid3 = int(nhid2 / 2)
-        nhid4 = int(nhid3 / 2)
-        self.gc1 = GraphConvolution(nfeat, nhid1, with_bias=with_bias)
-        self.gc2 = GraphConvolution(nhid1, nhid2, with_bias=with_bias)
-        self.gc3 = GraphConvolution(nhid2, nhid3, with_bias=with_bias)
-        self.gc4 = GraphConvolution(nhid3, nhid4, with_bias=with_bias)
-        self.gc5 = GraphConvolution(nhid4, 16, with_bias=with_bias)
-        self.gc6 = GraphConvolution(16, nclass, with_bias=with_bias)
+        self.gc1 = GraphConvolution(nfeat, nhid, with_bias=with_bias)
+        self.gc2 = GraphConvolution(nhid, nclass, with_bias=with_bias)
         self.dropout = dropout
         self.lr = lr
         self.bound=bound
@@ -133,12 +125,7 @@ class BoundedGCN(nn.Module):
             x = self.gc1(x, adj)
 
         x = F.dropout(x, self.dropout, training=self.training)
-        x = F.relu(self.gc2(x, adj))
-        x = F.relu(self.gc3(x, adj))
-        x = F.dropout(x, self.dropout, training=self.training)
-        x = self.gc4(x, adj)
-        x = self.gc5(x, adj)
-        x = self.gc6(x, adj)
+        x = self.gc2(x, adj)
         return F.log_softmax(x, dim=1)
 
     def initialize(self):
@@ -239,12 +226,7 @@ class BoundedGCN(nn.Module):
             optimizer.zero_grad()
             output = self.forward(self.features, self.adj_norm)
 
-            self.l2_reg = 2 * self.bound **2* (
-                        torch.log(torch.norm(self.gc1.weight)) + torch.log(torch.norm(self.gc2.weight)) \
-                        + torch.log(torch.norm(self.gc3.weight)) \
-                        + torch.log(torch.norm(self.gc4.weight)) \
-                        + torch.log(torch.norm(self.gc5.weight)) \
-                        + torch.log(torch.norm(self.gc6.weight)))  # Added by me
+            self.l2_reg = 2 * self.bound**2 * (torch.log(torch.norm(self.gc1.weight)) + torch.log(torch.norm(self.gc2.weight)) )
 
 
 
