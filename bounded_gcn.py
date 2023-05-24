@@ -117,6 +117,7 @@ class BoundedGCN(nn.Module):
         self.best_output = None
         self.adj_norm = None
         self.features = None
+        self.l2_reg=0
 
 
 
@@ -167,12 +168,12 @@ class BoundedGCN(nn.Module):
             self.initialize()
 
         if type(adj) is not torch.Tensor:
-            features, adj, labels = utils.to_tensor(features, adj, labels, device=self.device)
+            features, adj, labels,l2_reg = utils.to_tensor(features, adj, labels,self.l2_reg, device=self.device)
         else:
             features = features.to(self.device)
             adj = adj.to(self.device)
             labels = labels.to(self.device)
-
+            l2_reg = self.l2_reg.to(self.device)
         if normalize:
             if utils.is_sparse_tensor(adj):
                 adj_norm = utils.normalize_adj_tensor(adj, sparse=True)
@@ -228,11 +229,11 @@ class BoundedGCN(nn.Module):
             optimizer.zero_grad()
             output = self.forward(self.features, self.adj_norm)
 
-            self.l2_reg = 2 * self.bound**2 * (torch.log(torch.norm(self.gc1.weight)) + torch.log(torch.norm(self.gc2.weight)) )    # Added by me
+            l2_reg = 2 * self.bound**2 * (torch.log(torch.norm(self.gc1.weight)) + torch.log(torch.norm(self.gc2.weight)) )    # Added by me
 
 
 
-            loss_train = F.nll_loss(output[idx_train], labels[idx_train]) + self.l2_reg
+            loss_train = F.nll_loss(output[idx_train], labels[idx_train]) + l2_reg
 
             # if i%10==0:
             #     print(f'l2 Reg = {self.l2_reg} , Loss = {loss_train}')
