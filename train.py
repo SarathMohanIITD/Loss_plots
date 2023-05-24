@@ -160,7 +160,7 @@ else:
     #col_norms = torch.norm(features, dim=0)
     #features = features/col_norms
 
-    rwlgnn = RwlGNN(model, args, device)
+    #rwlgnn = RwlGNN(model, args, device)
     if args.two_stage=="y":
         #adj_new = rwlgnn.fit(features, perturbed_adj)
         model.fit(features, perturbed_adj, labels, idx_train, idx_val, verbose=False, train_iters=args.epochs,bound=args.bound) #######
